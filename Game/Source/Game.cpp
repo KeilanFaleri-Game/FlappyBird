@@ -36,10 +36,14 @@ Game::~Game()
 
     delete m_pPlayer;
     delete m_pCamera;
-    delete[] m_pPipe;
     delete m_pBackground;
     delete m_pGround;
-    delete[] m_pPipe2;
+
+    for (int i = 0; i < 4; i++)
+    {
+        delete[] m_pPipe[i];
+        delete[] m_pPipe2[i];
+    }
 
     glDeleteTextures( 1, &m_TextureBall );
 
@@ -95,12 +99,17 @@ void Game::Init()
     // Create our GameObjects.
     m_pPlayer = new Player( this, m_pMeshCircle, m_pShaderTexture, m_TextureBall, vec2( 30, 50 ), 0, m_pController );
     m_pCamera = new Camera( this, vec2( 50, 50 ), vec2( 1/(GetWorldWidth()/2), 1/(GetWorldHeight()/2) ) );
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < 4; i++)
     {
-        m_pPipe[i] = new Ball(this, m_pMeshTriangle, m_pShaderTexture, m_TexturePipe, vec2(75 + i*50, -5));
-        m_pPipe2[i] = new Ball(this, m_pMeshTriangle2, m_pShaderTexture, m_TexturePipe, vec2(75 + i*50, 65));
+        int random = rand() % 20 - 20;
+
+        m_pPipe[i] = new Ball(this, m_pMeshTriangle, m_pShaderTexture, m_TexturePipe, vec2(75 + i*35, random));
+        m_pPipe2[i] = new Ball(this, m_pMeshTriangle2, m_pShaderTexture, m_TexturePipe, vec2(75 + i*35, random + 75));
     }
-    m_pGround = new Ground(this, m_pMeshGround, m_pShaderTexture, m_TextureGround, vec2(0, 0));
+    for (int i = 0; i < 20; i++)
+    {
+        m_pGround[i] = new Ground(this, m_pMeshGround, m_pShaderTexture, m_TextureGround, vec2(i * 10, 0));
+    }
     m_pBackground = new Background(this, m_pMeshBackground, m_pShaderTexture, m_TextureBackground, vec2(0, 0));
 }
 
@@ -113,7 +122,7 @@ void Game::Update(float deltaTime)
 {
     m_pImGuiManager->StartFrame( (float)m_pFramework->GetWindowWidth(), (float)m_pFramework->GetWindowHeight(), deltaTime );
 
-    int random = rand() % 30 - 20;
+    int random = rand() % 20 - 20;
 
     if( m_pFramework->IsKeyDown( VK_F1 ) )
         wglSwapInterval( 0 );
@@ -123,12 +132,15 @@ void Game::Update(float deltaTime)
     m_pBackground->Update(deltaTime);
     m_pPlayer->Update( deltaTime );
     m_pCamera->Update( deltaTime );
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < 4; i++)
     {
         m_pPipe[i]->Update(deltaTime, random);
-        m_pPipe2[i]->Update(deltaTime, 70 + random);
+        m_pPipe2[i]->Update(deltaTime, 75 + random);
     }
-    m_pGround->Update(deltaTime);
+    for (int i = 0; i < 20; i++)
+    {
+        m_pGround[i]->Update(deltaTime);
+    }
 
     CheckForCollisions();
 }
@@ -142,12 +154,16 @@ void Game::Draw()
     // Draw our game objects.
     m_pBackground->Draw(m_pCamera);
     m_pPlayer->Draw( m_pCamera );
+
+    for (int i = 0; i < 20; i++)
+    {
+        m_pGround[i]->Draw(m_pCamera);
+    }
     for (int i = 0; i < 4; i++)
     {
         m_pPipe[i]->Draw(m_pCamera);
         m_pPipe2[i]->Draw(m_pCamera);
     }
-    m_pGround->Draw(m_pCamera);
 
     m_pImGuiManager->EndFrame();
 }

@@ -16,9 +16,9 @@ Ground::~Ground()
 void Ground::Update(float deltaTime)
 {
     m_Position.x -= 0.5f;
-    if (m_Position.x <= -100.0f)
+    if (m_Position.x <= -10.0f)
     {
-        m_Position.x = 0.0f;
+        m_Position.x = 100.0f;
     }
 }
 

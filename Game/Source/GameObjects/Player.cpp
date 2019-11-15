@@ -14,7 +14,8 @@ Player::Player(Game* pGame, Mesh* pMesh, fw::ShaderProgram* pShader, GLuint text
 , m_PlayerNumber( playerNum )
 , m_pController( pController )
 {
-    time = 0.0f;
+    m_time = 0.0f;
+    m_CanJump = true;
 }
     
 Player::~Player()
@@ -28,23 +29,27 @@ void Player::Update(float deltaTime)
     float speed = 30;
     vec2 dir( 0, 0 );
 
-    if (m_pController->m_Up && time <= 0.5f)
+    if (m_CanJump)
     {
-        dir.y = 2;
-        time += deltaTime;
-    }
-    else if (!(m_pController->m_Up) && time >= 0.5f)
-    {
-        time = 0.0f;
-    }
-    else
-    {
-        dir.y = -1;
+        if (m_pController->m_Up && m_time < 3)
+        { 
+            dir.y += 1;
+            m_CanJump = false;
+            m_time += deltaTime;
+            m_Position += dir * speed * deltaTime;
+            
+        }
+        else
+        {
+            m_time -= deltaTime;
+        }
     }
 
-    if (m_Position.y <= 10)
+    dir.y -= 1;
+
+    if (m_time < 0)
     {
-        m_Position = vec2(30, 50);
+        m_CanJump = true;
     }
 
     m_Position += dir * speed * deltaTime;

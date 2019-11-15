@@ -22,7 +22,7 @@ void Ball::Update(float deltaTime, int random)
     if (m_Position.x <= -40.0f)
     {
         m_Position.x = 100.0f;
-        m_Position.y = random;
+        m_Position.y = (float)random;
     }
 }
 

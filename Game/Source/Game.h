@@ -32,9 +32,9 @@ protected:
     Background* m_pBackground;
     Player* m_pPlayer;
     Camera* m_pCamera;
-    Ball* m_pPipe[3];
-    Ball* m_pPipe2[3];
-    Ground* m_pGround;
+    Ball* m_pPipe[4];
+    Ball* m_pPipe2[4];
+    Ground* m_pGround[20];
 
 
     PlayerController* m_pController;

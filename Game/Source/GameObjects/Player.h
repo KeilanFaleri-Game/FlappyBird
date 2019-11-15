@@ -11,7 +11,8 @@ class Player : public GameObject
 protected:
     PlayerController* m_pController;
     int m_PlayerNumber;
-    float time;
+    float m_time;
+    bool m_CanJump;
 
 public:
     Player(Game* pGame, Mesh* pMesh, fw::ShaderProgram* pShader, GLuint textureID, fw::vec2 position, int playerNum, PlayerController* pController);

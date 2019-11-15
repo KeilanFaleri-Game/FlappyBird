@@ -172,8 +172,8 @@ void Mesh::GenerateGround()
     VertexFormat vertices[] = {
         VertexFormat(0.0f,  0.0f, 0, 255, 0, 255, 0, 0),
         VertexFormat(0.0f, 5.0f, 0, 128, 0, 255, 0, 1),
-        VertexFormat(200.0f, 5.0f, 0, 128, 0, 255, 1, 1),
-        VertexFormat(200.0f, 0.0f, 0, 128, 0, 255, 1, 0)
+        VertexFormat(10.0f, 5.0f, 0, 128, 0, 255, 1, 1),
+        VertexFormat(10.0f, 0.0f, 0, 128, 0, 255, 1, 0)
     };
 
     Init(vertices, 4, GL_TRIANGLE_FAN);
